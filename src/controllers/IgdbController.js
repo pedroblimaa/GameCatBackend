@@ -9,8 +9,10 @@ module.exports = {
       "&client_secret=" +
       process.env.IGDB_SECRET +
       "&grant_type=client_credentials"
+    
+    let body = ""
 
-    https
+    await https
       .request(
         {
           host: "id.twitch.tv",
@@ -18,11 +20,9 @@ module.exports = {
           method: "POST",
         },
         function (response) {
-          let body = ""
           response.on("data", function (chunk) {
             body += chunk
-          })
-          response.on("end", function () {
+            console.log(body)
             return body
           })
         }

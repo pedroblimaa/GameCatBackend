@@ -2,10 +2,10 @@ const https = require("https")
 const IgdbController = require("./IgdbController")
 
 module.exports = {
-  getGames: async (req, res) => {
-    const keyBody = await IgdbController.getToken().then((response) => {
-        console.log(response)
-    })
+    getGames: async (req, res) => {
+    const response = await IgdbController.getToken()
+    console.log(response)
+    res.send({'games': response})
     return
     // const key = JSON.parse(keyBody).access_token
 
