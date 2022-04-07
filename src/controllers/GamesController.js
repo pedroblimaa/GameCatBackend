@@ -3,8 +3,10 @@ const IgdbService = require("../services/IgdbService")
 
 module.exports = {
   getGames: async (req, res) => {
-    const igdbToken = await IgdbService.getIgdbToken()
-    const games = await IgdbService.getGames(igdbToken)
+    const igdbAuth = await IgdbService.getIgdbToken()
+    const games = await IgdbService.getGames(igdbAuth.token)
+
+    console.log(igdbAuth)
 
     res.send(games)
   },

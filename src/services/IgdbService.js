@@ -1,4 +1,5 @@
 const axios = require("axios")
+const res = require("express/lib/response")
 require("dotenv").config()
 
 const host = "https://api.igdb.com/v4"
@@ -15,7 +16,14 @@ module.exports = {
     const igdbCredentialsResponse = await axios.post(
       "https://id.twitch.tv" + requestPath
     )
-    return igdbCredentialsResponse.data.access_token
+
+    const expireSeconds = igdbCredentialsResponse.data.expires_in
+    const expireDate = new Date(Date.now() + expireSeconds * 1000)
+
+    return {
+      token: igdbCredentialsResponse.data.access_token,
+      expireDate: expireDate,
+    }
   },
 
   getGames: async (igdbToken, limit = 12, offset = 0) => {
