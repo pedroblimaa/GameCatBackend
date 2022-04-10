@@ -68,15 +68,9 @@ const verifyTokenExpiration = async () => {
   return igdbCredentials[0]
 }
 
-const getGames = async (igdbToken, limit = 12, offset = 0) => {
-  const fields =
-    "id,category,external_games,game_modes,genres,platforms,release_dates,screenshots,similar_games,slug,summary"
-
-  const requestPath =
-    host + "/games?fields=" + fields + "&limit=" + limit + "&offset=" + offset
-
+const getGames = async (igdbToken, urlPath) => {
   const games = await axios.get(
-    requestPath + "&order=release_dates.date%3Adesc&search=",
+    host + urlPath,
     {
       headers: {
         Authorization: "Bearer " + igdbToken,
@@ -88,4 +82,5 @@ const getGames = async (igdbToken, limit = 12, offset = 0) => {
 
   return games.data
 }
+
 module.exports = { getGames, tokenRequestProcesss }

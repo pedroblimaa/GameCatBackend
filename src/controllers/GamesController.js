@@ -1,12 +1,12 @@
 const axios = require("axios")
-const IgdbService = require("../services/IgdbService")
+const gameService = require("../services/gameService")
+const igdbService = require("../services/igdbService")
 
 module.exports = {
   getGames: async (req, res) => {
-    const igdbAuth = await IgdbService.tokenRequestProcesss()
-    const games = await IgdbService.getGames(igdbAuth.token)
-
-    console.log(igdbAuth)
+    const igdbAuth = await igdbService.tokenRequestProcesss()
+    const urlPath = gameService.mountGetGameUrl()
+    const games = await igdbService.getGames(igdbAuth.token, urlPath)
 
     res.send(games)
   },
