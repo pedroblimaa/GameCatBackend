@@ -1,14 +1,23 @@
+import { FIELDS } from '../utils/constants'
+import Validations from '../utils/validations'
+
+const getFields = () => {
+  return FIELDS.join(',')
+}
+
 module.exports = {
-  mountGetGameUrl: (limit = 12, offset = 0) => {
 
-    const fields =
-      "id,category,external_games,game_modes,genres,platforms,release_dates,screenshots,similar_games,slug,summary"
+  getGamesUrl: (limit = 12, offset = 0, orderBy = "release_dates", searchBy = "", searchFor = "") => {
 
-    const requestPath =
-      "/games?fields=" + fields + "&limit=" + limit + "&offset=" + offset
+    Validations.validateItem(searchFor, searchBy)
+    const fields = getFields()
+    const requestPath = `/games?fields=${fields}&limit=${limit}&offset=${offset}`
+    let url = `${requestPath}&order=${orderBy}%3Adesc&search=`
 
-    const url = requestPath + "&order=release_dates.date%3Adesc&search="
+    if (searchBy) {
+      url += `${searchBy}%3A${searchFor}`
+    }
 
     return url;
-  }
+  },
 }

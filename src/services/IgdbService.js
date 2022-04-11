@@ -68,7 +68,7 @@ const verifyTokenExpiration = async () => {
   return igdbCredentials[0]
 }
 
-const getGames = async (igdbToken, urlPath) => {
+const gameRequest = async (igdbToken, urlPath) => {
   const games = await axios.get(
     host + urlPath,
     {
@@ -83,4 +83,4 @@ const getGames = async (igdbToken, urlPath) => {
   return games.data
 }
 
-module.exports = { getGames, tokenRequestProcesss }
+module.exports = { gameRequest, tokenRequestProcesss }
