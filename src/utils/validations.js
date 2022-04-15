@@ -4,10 +4,10 @@ const validateId = (id, next) => {
   try {
     const idNumber = Number(id)
     if (!idNumber) {
-      throw new Error("Invalid Id")
+      throw new Error("Invalid Id:", id)
     }
   } catch (err) {
-    throw new Error("Invalid Id")
+    throw new Error("Invalid Id:", id)
   }
   next()
 }
@@ -16,10 +16,10 @@ const validateDate = (date, next) => {
   try {
     const dateNumber = Number(date)
     if (!dateNumber) {
-      throw new Error("Invalid Date")
+      throw new Error("Invalid Date:", date)
     }
   } catch (err) {
-    throw new Error("Invalid Date")
+    throw new Error("Invalid Date:", date)
   }
   next()
 }
@@ -40,8 +40,8 @@ const validateArray = (arrayItem, array, arrayName, next) => {
 }
 
 const validateSearch = (search, next) => {
-  if(!(search in SEARCHES) && search !== "") {
-    throw new Error("Invalid Search")
+  if(!(SEARCHES.includes(search)) && search !== "") {
+    throw new Error("Invalid Search:", search)
   }
   next()
 }

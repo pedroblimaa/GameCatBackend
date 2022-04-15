@@ -72,16 +72,23 @@ const verifyTokenExpiration = async () => {
 }
 
 const gameRequest = async (igdbToken, urlPath) => {
-  const games = await axios.get(
-    host + urlPath,
-    {
-      headers: {
-        Authorization: "Bearer " + igdbToken,
-        Accept: "application/json",
-        "Client-ID": process.env.IGDB_CLIENT_ID,
-      },
-    }
-  )
+  let games;
+  let error;
+
+  try {
+    games = await axios.get(
+      host + urlPath,
+      {
+        headers: {
+          Authorization: "Bearer " + igdbToken,
+          Accept: "application/json",
+          "Client-ID": process.env.IGDB_CLIENT_ID,
+        },
+      }
+    )
+  } catch (err) {
+    console.log(err.response.data)
+  }
 
   return games.data
 }
