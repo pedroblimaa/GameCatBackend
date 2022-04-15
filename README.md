@@ -1,0 +1,5 @@
+# Env Structure
+- DB_USER=
+- DB_PASS=
+- IGDB_CLIENT_ID=
+- IGDB_SECRET=
