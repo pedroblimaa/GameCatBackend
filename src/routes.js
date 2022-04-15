@@ -1,9 +1,8 @@
 const router = require("express").Router()
 
 const GamesController = require("./controllers/GamesController")
-const TestDbController = require("./controllers/TestDbController")
 
-router.get("/getGames", GamesController.getGames)
-router.get("/testDb", TestDbController.testDb)
+router.get("/games", GamesController.getGames)
+router.get("/test", GamesController.test)
 
 module.exports = router

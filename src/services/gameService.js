@@ -1,5 +1,5 @@
-import { FIELDS } from '../utils/constants'
-import Validations from '../utils/validations'
+const { FIELDS } = require ('../utils/constants')
+const Validations = require ('../utils/validations')
 
 const getFields = () => {
   return FIELDS.join(',')
@@ -8,7 +8,6 @@ const getFields = () => {
 module.exports = {
 
   getGamesUrl: (limit = 12, offset = 0, orderBy = "release_dates", searchBy = "", searchFor = "") => {
-
     Validations.validateItem(searchFor, searchBy)
     const fields = getFields()
     const requestPath = `/games?fields=${fields}&limit=${limit}&offset=${offset}`

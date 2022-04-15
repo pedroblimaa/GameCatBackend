@@ -1,4 +1,4 @@
-import { GENRES } from './constants';
+const { GENRES, SEARCHES } = require('./constants')
 
 const validateId = (id, next) => {
   try {
@@ -39,8 +39,18 @@ const validateArray = (arrayItem, array, arrayName, next) => {
   next()
 }
 
+const validateSearch = (search, next) => {
+  if(!(search in SEARCHES) && search !== "") {
+    throw new Error("Invalid Search")
+  }
+  next()
+}
+
+
 module.exports = {
   validateItem: (item, itemName) => {
+    validateSearch(itemName, () => {})
+
     switch (itemName) {
       case 'date':
         validateDate(item, () => { })

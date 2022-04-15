@@ -1,6 +1,6 @@
 const axios = require("axios")
 const dbService = require("./dbService")
-const db = require("../config/db")
+const db = require("../db/index")
 require("dotenv").config()
 
 const host = "https://api.igdb.com/v4"
@@ -49,10 +49,13 @@ const saveToken = async (token, expireDate) => {
     }
     dbService.updateIgdbToken(newIgdbCredentials, igdbCredentials)
 
+  }).catch(err => {
+    console.log("Database error: " + err)
   })
 }
 
 const verifyTokenExpiration = async () => {
+
   const igdbCredentials = await db.IgdbCredentials.findAll().then(igdbCredentials => {
     return igdbCredentials
   })

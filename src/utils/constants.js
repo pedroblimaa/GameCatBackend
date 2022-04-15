@@ -1,3 +1,9 @@
+exports.SEARCHES = [
+  'category',
+  'game_modes',
+  'genres',
+]
+
 exports.GENRES = [
   "Action",
   "Adventure",
