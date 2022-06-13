@@ -1,11 +1,11 @@
-const axios = require("axios")
-const dbService = require("./dbService")
-const db = require("../db/index")
-require("dotenv").config()
+const axios = require('axios')
+const dbService = require('./dbService')
+const db = require('../db/index')
+require('dotenv').config()
 
-const host = "https://api.igdb.com/v4"
+const host = 'https://api.igdb.com/v4'
 
-const tokenRequestProcesss = async () => {
+const tokenRequestProcces = async () => {
   let igdbCredentials = await verifyTokenExpiration()
   if (!igdbCredentials) {
     igdbCredentials = getIgdbToken()
@@ -15,15 +15,13 @@ const tokenRequestProcesss = async () => {
 
 const getIgdbToken = async () => {
   const requestPath =
-    "/oauth2/token?client_id=" +
+    '/oauth2/token?client_id=' +
     process.env.IGDB_CLIENT_ID +
-    "&client_secret=" +
+    '&client_secret=' +
     process.env.IGDB_SECRET +
-    "&grant_type=client_credentials"
+    '&grant_type=client_credentials'
 
-  const igdbCredentialsResponse = await axios.post(
-    "https://id.twitch.tv" + requestPath
-  )
+  const igdbCredentialsResponse = await axios.post('https://id.twitch.tv' + requestPath)
 
   const expireSeconds = igdbCredentialsResponse.data.expires_in
   const expireDate = new Date(Date.now() + expireSeconds * 1000)
@@ -42,21 +40,21 @@ const saveToken = async (token, expireDate) => {
     token: token,
     expireDate: expireDate,
   }
-  db.IgdbCredentials.findAll().then(igdbCredentials => {
-    if (!igdbCredentials.length) {
-      db.IgdbCredentials.create(newIgdbCredentials)
-      return
-    }
-    dbService.updateIgdbToken(newIgdbCredentials, igdbCredentials)
-
-  }).catch(err => {
-    console.log("Database error: " + err)
-  })
+  db.IgdbCredentials.findAll()
+    .then((igdbCredentials) => {
+      if (!igdbCredentials.length) {
+        db.IgdbCredentials.create(newIgdbCredentials)
+        return
+      }
+      dbService.updateIgdbToken(newIgdbCredentials, igdbCredentials)
+    })
+    .catch((err) => {
+      console.log('Database error: ' + err)
+    })
 }
 
 const verifyTokenExpiration = async () => {
-
-  const igdbCredentials = await db.IgdbCredentials.findAll().then(igdbCredentials => {
+  const igdbCredentials = await db.IgdbCredentials.findAll().then((igdbCredentials) => {
     return igdbCredentials
   })
 
@@ -71,21 +69,19 @@ const verifyTokenExpiration = async () => {
   return igdbCredentials[0]
 }
 
-const gameRequest = async (igdbToken, urlPath) => {
-  let games;
-  let error;
+const gameRequest = async (igdbToken, requestConfig) => {
+  let games
+
+  const requestPath = host + requestConfig.path
+  const requestParams = requestConfig.params
 
   try {
-    games = await axios.get(
-      host + urlPath,
-      {
-        headers: {
-          Authorization: "Bearer " + igdbToken,
-          Accept: "application/json",
-          "Client-ID": process.env.IGDB_CLIENT_ID,
-        },
-      }
-    )
+    games = await axios.post(requestPath, requestParams, {
+      headers: {
+        'Client-ID': process.env.IGDB_CLIENT_ID,
+        Authorization: 'Bearer ' + igdbToken,
+      },
+    })
   } catch (err) {
     console.log(err.response.data)
   }
@@ -93,4 +89,4 @@ const gameRequest = async (igdbToken, urlPath) => {
   return games.data
 }
 
-module.exports = { gameRequest, tokenRequestProcesss }
+module.exports = { gameRequest, tokenRequestProcces, getIgdbToken }
