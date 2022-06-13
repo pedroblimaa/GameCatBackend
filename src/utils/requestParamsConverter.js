@@ -23,11 +23,11 @@ const convertSearchToSql = (search) => {
 }
 
 const convertUniqueSearchToSql = (search) => {
-  const [field, value] = search.split('=')
-
   if (!search) {
     return ''
   }
+
+  const [field, value] = search.split('=')
 
   if (field === 'name') {
     return `search "${value}";`
@@ -37,7 +37,11 @@ const convertUniqueSearchToSql = (search) => {
 }
 
 const convertSortToSql = (sort) => {
-  const [field, order] = sort.split('=')
+  let [field, order] = sort.split('=')
+
+  if(!order){
+    order = 'desc'
+  }
 
   return `sort ${field} ${order}; `
 }
@@ -57,7 +61,7 @@ module.exports = {
     const fields = ['id', 'name']
     const fieldsParams = convertFields(fields)
     const searchParams = convertUniqueSearchToSql(seach)
-    const sortParams = ''
+    let sortParams = ''
     if (!searchParams) {
       sortParams = convertSortToSql(sort)
     }
